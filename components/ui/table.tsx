@@ -17,23 +17,23 @@ export const Table: React.FC<TableProps> = ({ data, className }) => {
 	const header = "Entrant Address";
 
 	return (
-	<table className={`min-w-full border-collapse table-auto ${className}`}>
+		<table className={`min-w-full border-collapse table-auto ${className}`}>
 		<thead>
 		<tr>
-			<th className="px-4 py-2 border-b text-left font-semibold">
-			{header}
-			</th>
+		<th className="px-4 py-2 border-b text-left font-semibold">
+		{header}
+		</th>
 		</tr>
 		</thead>
 		<tbody>
-			{data.map((row, rowIndex) => (
-				<tr key={rowIndex} className="hover:bg-gray-50">
-					<td className="px-4 py-2 border-b font-mono text-sm"> {/* Added font-mono for addresses */}
-				{row.address} {/* Access the address property */}
-					</td>
-				</tr>
-			))}
+		{data.map((row, rowIndex) => (
+			<tr key={rowIndex} className="hover:bg-gray-50">
+			<td className="px-4 py-2 border-b font-mono text-sm">
+			{row.address}
+			</td>
+			</tr>
+		))}
 		</tbody>
-	</table>
+		</table>
 	);
 };

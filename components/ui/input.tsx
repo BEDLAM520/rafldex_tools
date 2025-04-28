@@ -19,6 +19,6 @@ export const Input: React.FC<InputProps> = ({ value, onChange, placeholder, clas
 		onChange={onChange}
 		placeholder={placeholder}
 		className={`p-2 border border-gray-300 rounded-md ${className}`}
-	/>
+		/>
 	);
 };

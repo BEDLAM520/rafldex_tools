@@ -54,12 +54,12 @@ export const Button: React.FC<ButtonProps> = ({
 
 	return (
 		<button
-			type={type}
-			onClick={onClick}
-			disabled={disabled}
-			aria-label={ariaLabel}
-			style={style}
-			className={combinedClassName}
+		type={type}
+		onClick={onClick}
+		disabled={disabled}
+		aria-label={ariaLabel}
+		style={style}
+		className={combinedClassName}
 		>
 		{children}
 		</button>

@@ -10,150 +10,179 @@ interface EntrantData {
 	address: string;
 }
 
+interface ApiSuccessResponse {
+	entrants: string[];
+}
+
+interface ApiErrorResponse {
+	error: string;
+	details?: string;
+}
+
 const IndexPage: React.FC = () => {
-	const [entrantAddresses, setEntrantAddresses] = useState<string[]>(['']);
+	const [raffleId, setRaffleId] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false);
-	const [entrants, setEntrants] = useState<EntrantData[]>([]);
+	const [participants, setParticipants] = useState<EntrantData[]>([]);
 	const [error, setError] = useState<string | null>(null);
 	const [cooldown, setCooldown] = useState<number>(0);
 
-	const handleInputChange = useCallback((index: number, value: string) => {
-		setEntrantAddresses(prev => {
-			const updated = [...prev];
-			updated[index] = value;
-			return updated;
-		});
+	const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		setRaffleId(e.target.value);
 	}, []);
-
-	const addAddressInput = useCallback(() => {
-		setEntrantAddresses(prev => [...prev, '']);
-	}, []);
-
-	const removeAddressInput = useCallback((index: number) => {
-		if (entrantAddresses.length <= 1) return;
-		setEntrantAddresses(prev => prev.filter((_, i) => i !== index));
-	}, [entrantAddresses.length]);
 
 	useEffect(() => {
-		let timer: NodeJS.Timeout;
+		let timer: NodeJS.Timeout | undefined;
 		if (cooldown > 0) {
-			timer = setTimeout(() => setCooldown(prev => prev - 1), 1000);
+			timer = setTimeout(() => setCooldown(prev => Math.max(0, prev - 1)), 1000);
 		}
-		return () => clearTimeout(timer);
+		return () => {
+			if (timer) clearTimeout(timer);
+		};
 	}, [cooldown]);
 
 	const handleFetchClick = useCallback(async () => {
-		const validAddresses = entrantAddresses
-			.map(addr => addr.trim())
-			.filter(addr => addr !== '');
+		const trimmedRaffleId = raffleId.trim();
 
-		if (validAddresses.length === 0) {
-			setError("Please enter at least one valid Entrants Address.");
-			setEntrants([]);
+		if (!trimmedRaffleId) {
+			setError("Please enter a valid Raffle ID/Address.");
+			setParticipants([]);
 			return;
 		}
 
 		setLoading(true);
-		setEntrants([]);
+		setParticipants([]);
 		setError(null);
 
 		try {
-			const queryParams = new URLSearchParams({
-				entrants: validAddresses.join(','),
-			});
+			const queryParams = new URLSearchParams({ raffleId: trimmedRaffleId });
+			const apiUrl = `/api/fetch_entries?${queryParams.toString()}`;
+			console.log(`Fetching from: ${apiUrl}`);
 
-			const response = await fetch(`/api/fetch_entries?${queryParams.toString()}`);
+			const response = await fetch(apiUrl);
 
 			if (!response.ok) {
-				const errorData = await response.json();
-				throw new Error(errorData?.error || `Request failed with status ${response.status}`);
+				let errorMessage = `Request failed with status ${response.status}`;
+				try {
+					const errorData: ApiErrorResponse = await response.json();
+					errorMessage = errorData?.error || errorMessage;
+					if (errorData?.details) {
+						errorMessage += ` (${errorData.details})`;
+					}
+					console.error("API Error Response:", errorData);
+				} catch (parseError) {
+					errorMessage = `${response.status} ${response.statusText || 'Error'}`;
+				}
+				throw new Error(errorMessage);
 			}
 
-			const result: { entrants: string[] } = await response.json();
-			const formattedEntrants = result.entrants.map(addr => ({ address: addr }));
-			setEntrants(formattedEntrants);
+			const result: ApiSuccessResponse = await response.json();
 
-			if (formattedEntrants.length === 0) {
-				setError("No interacting addresses found for the provided Entrants Address(es).");
+			const fetchedParticipants = Array.isArray(result.entrants)
+			? result.entrants.map(addr => ({ address: addr }))
+			: [];
+
+			setParticipants(fetchedParticipants);
+
+			if (fetchedParticipants.length === 0) {
+				setError("No participants found for the provided Raffle ID/Address.");
 			}
-		} catch (err) {
-			console.error("Failed to fetch entrants:", err);
-			if (err instanceof Error && err.message.includes('429')) {
-				setError("Rate limit exceeded. Please wait a few seconds before retrying.");
-			} else {
-				setError(err instanceof Error ? err.message : "An unknown error occurred.");
+
+		} catch (err: unknown) {
+			console.error("Failed to fetch participants:", err);
+			let specificError = "An unknown error occurred.";
+			if (err instanceof Error) {
+				if (err.message.includes('429') || err.message.toLowerCase().includes('rate limit')) {
+					specificError = "Rate limit exceeded. Please wait a few seconds before retrying.";
+				} else if (err.message.includes('404') || err.message.toLowerCase().includes('not found')) {
+					specificError = "Raffle ID/Address not found.";
+				} else {
+					specificError = err.message;
+				}
 			}
-			setEntrants([]);
+			setError(specificError);
+			setParticipants([]);
 		} finally {
 			setLoading(false);
-			setCooldown(5); // 5-second cooldown after button press
+			setCooldown(5);
 		}
-	}, [entrantAddresses]);
+	}, [raffleId]);
+
+	const isDownloadDisabled = participants.length === 0;
+	const downloadFileName = `raffle_${raffleId.substring(0, 8) || 'export'}_participants`;
 
 	return (
 		<div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-			<Card style={{ marginBottom: '20px', padding: '20px' }}>
-				<h1>Solana Raffle Entrant Snapshot</h1>
-				<p style={{ marginBottom: '15px' }}>Enter one or more Entrants Addresses below.</p>
+		<Card style={{ marginBottom: '20px', padding: '20px' }}>
+		<h1>Raffle Participant Snapshot</h1>
+		<p style={{ marginBottom: '15px' }}>Enter the Raffle ID/Address below to fetch participants.</p>
 
-				{entrantAddresses.map((address, index) => (
-					<div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', gap: '10px' }}>
-						<label htmlFor={`entrantAddress-${index}`} className="sr-only">
-							Entrants Address {index + 1}:
-						</label>
-						<Input
-							id={`entrantAddress-${index}`}
-							value={address}
-							onChange={(e) => handleInputChange(index, e.target.value)}
-							placeholder="Enter Entrants Address..."
-							className="flex-grow"
-						/>
-						{index === entrantAddresses.length - 1 && (
-							<Button onClick={addAddressInput} variant="outline" size="icon" aria-label="Add address field">
-								+
-							</Button>
-						)}
-						{entrantAddresses.length > 1 && (
-							<Button onClick={() => removeAddressInput(index)} variant="destructive" size="icon" aria-label={`Remove address field ${index + 1}`}>
-								-
-							</Button>
-						)}
-					</div>
-				))}
+		<div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', gap: '10px' }}>
+		<label htmlFor="raffleIdInput" className="sr-only">
+		Raffle ID/Address:
+		</label>
+		<Input
+		id="raffleIdInput"
+		value={raffleId}
+		onChange={handleInputChange}
+		placeholder="Enter Raffle ID/Address..."
+		className="flex-grow"
+		aria-label="Raffle ID or Address"
+		/>
+		</div>
 
-				<Button
-					onClick={handleFetchClick}
-					disabled={loading || cooldown > 0}
-					style={{ marginTop: '10px' }}
-				>
-					{loading ? <LoadingSpinner /> : cooldown > 0 ? `Wait ${cooldown}s` : 'Fetch Entrants'}
-				</Button>
-			</Card>
+		<Button
+		onClick={handleFetchClick}
+		disabled={loading || cooldown > 0 || !raffleId.trim()}
+		style={{ marginTop: '10px' }}
+		aria-live="polite"
+		>
+		{loading ? (
+			<LoadingSpinner />
+		) : cooldown > 0 ? (
+			`Wait ${cooldown}s`
+		) : (
+			'Fetch Participants'
+		)}
+		</Button>
+		</Card>
 
-			{loading && (
-				<div style={{ textAlign: 'center', margin: '20px 0' }}>
-					<LoadingSpinner />
-				</div>
-			)}
+		{loading && (
+			<div style={{ textAlign: 'center', margin: '20px 0' }}>
+			<LoadingSpinner />
+			<p>Fetching participants...</p>
+			</div>
+		)}
 
-			{error && <p style={{ color: 'red', textAlign: 'center', margin: '20px 0' }}>Error: {error}</p>}
+		{error && !loading && (
+			<p style={{ color: 'red', textAlign: 'center', margin: '20px 0', fontWeight: 'bold' }}>
+			Error: {error}
+			</p>
+		)}
 
-			{!loading && !error && entrants.length > 0 && (
-				<>
-					<Table data={entrants} className="mb-4" />
-					<DownloadButton
-						data={entrants}
-						style={{ marginTop: '20px' }}
-						fileName={`entrants_snapshot_${entrantAddresses[0] || 'export'}`}
-					/>
-				</>
-			)}
+		{!loading && !error && participants.length > 0 && (
+			<>
+			<h2 style={{ marginTop: '20px', marginBottom: '10px' }}>Participants ({participants.length})</h2>
+			<Table data={participants} className="mb-4" />
+			<DownloadButton
+			data={participants}
+			format="json"
+			style={{ marginTop: '20px', marginLeft: '10px' }}
+			fileName={downloadFileName}
+			/>
+			</>
+		)}
 
-			{!loading && !error && entrants.length === 0 && (
-				<p style={{ textAlign: 'center', margin: '20px 0' }}>
-					No entrants to display. Enter address(es) and click "Fetch Entrants".
-				</p>
-			)}
+		{!loading && !error && participants.length === 0 && !raffleId && (
+			<p style={{ textAlign: 'center', margin: '20px 0' }}>
+			Enter a Raffle ID/Address and click "Fetch Participants" to see the results.
+			</p>
+		)}
+
+		{!loading && !error && participants.length === 0 && raffleId && (
+			<p style={{ textAlign: 'center', margin: '20px 0' }}>
+			No participants found for the specified Raffle ID/Address.
+			</p>
+		)}
 		</div>
 	);
 };

@@ -9,7 +9,7 @@ interface CardProps {
 export const Card: React.FC<CardProps> = ({ children, className, style }) => {
 	return (
 		<div style={style} className={`p-4 border rounded-lg shadow-lg ${className}`}>
-		{children} {/* Render children directly */}
+		{children}
 		</div>
 	);
 };
