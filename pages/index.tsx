@@ -31,9 +31,14 @@ const IndexPage: React.FC = () => {
 	const [participants, setParticipants] = useState<ParticipantData[]>([]);
 	const [error, setError] = useState<string | null>(null);
 	const [cooldown, setCooldown] = useState<number>(0);
+	const [showTicketsInTable, setShowTicketsInTable] = useState<boolean>(false);
 
 	const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
 		setRaffleId(e.target.value);
+	}, []);
+
+	const handleShowTicketsChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		setShowTicketsInTable(e.target.checked);
 	}, []);
 
 	useEffect(() => {
@@ -58,6 +63,7 @@ const IndexPage: React.FC = () => {
 		setLoading(true);
 		setParticipants([]);
 		setError(null);
+		setShowTicketsInTable(false);
 
 		try {
 			const externalApiUrl = `https://api.rafldex.io/raffle-participants/${trimmedRaffleId}`;
@@ -88,7 +94,7 @@ const IndexPage: React.FC = () => {
 
 				if (response.status === 404) {
 					errorMessage = "Raffle ID/Address not found on Rafldex API.";
-
+				} else if (response.status === 429) {
 					errorMessage = "Rate limit exceeded on Rafldex API. Please wait.";
 				}
 
@@ -146,12 +152,12 @@ const IndexPage: React.FC = () => {
 	const downloadFileName = `raffle_${raffleId.substring(0, 8) || 'export'}_participants_tickets`;
 
 	return (
-		<div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-		<Card style={{ marginBottom: '20px', padding: '20px' }}>
-		<h1>Raffle Participant Snapshot</h1>
-		<p style={{ marginBottom: '15px' }}>Enter the Raffle ID/Address below to fetch participants and their ticket counts.</p>
+		<div className="container mx-auto py-8 font-sans">
+		<Card className="mb-6">
+		<h1 className="text-2xl font-bold mb-4 text-brand-dark">Raffle Participant Snapshot</h1>
+		<p className="mb-6 text-brand-dark/80">Enter the Raffle ID/Address below to fetch participants and their ticket counts.</p>
 
-		<div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', gap: '10px' }}>
+		<div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
 		<label htmlFor="raffleIdInput" className="sr-only">
 		Raffle ID/Address:
 		</label>
@@ -163,13 +169,11 @@ const IndexPage: React.FC = () => {
 		className="flex-grow"
 		aria-label="Raffle ID or Address"
 		/>
-		</div>
-
 		<Button
 		onClick={handleFetchClick}
 		disabled={loading || cooldown > 0 || !raffleId.trim()}
-		style={{ marginTop: '10px' }}
 		aria-live="polite"
+		className="w-full sm:w-auto"
 		>
 		{loading ? (
 			<LoadingSpinner />
@@ -179,41 +183,60 @@ const IndexPage: React.FC = () => {
 			'Fetch Participants'
 		)}
 		</Button>
+		</div>
+
+		{!loading && !error && participants.length > 0 && (
+			<div className="flex items-center mt-4">
+			<input
+			type="checkbox"
+			id="showTicketsCheckbox"
+			checked={showTicketsInTable}
+			onChange={handleShowTicketsChange}
+			className="mr-2 h-4 w-4 text-brand-orange rounded border-gray-300 focus:ring-brand-orange"
+			/>
+			<label htmlFor="showTicketsCheckbox" className="text-sm font-medium text-brand-dark">
+			Show Tickets Bought
+			</label>
+			</div>
+		)}
+
 		</Card>
 
 		{loading && (
-			<div style={{ textAlign: 'center', margin: '20px 0' }}>
+			<div className="text-center my-8">
 			<LoadingSpinner />
-			<p>Fetching participants...</p>
+			<p className="mt-2 text-brand-dark/80">Fetching participants...</p>
 			</div>
 		)}
 
 		{error && !loading && (
-			<p style={{ color: 'red', textAlign: 'center', margin: '20px 0', fontWeight: 'bold' }}>
+			<p className="text-red-500 text-center my-8 font-bold">
 			Error: {error}
 			</p>
 		)}
 
 		{!loading && !error && participants.length > 0 && (
 			<>
-			<h2 style={{ marginTop: '20px', marginBottom: '10px' }}>Participants ({participants.length})</h2>
-			<Table data={participants} className="mb-4" />
+			<h2 className="text-xl font-semibold mb-4 text-brand-dark">Participants ({participants.length})</h2>
+
+			<Table data={participants} className="mb-6" showTickets={showTicketsInTable} />
+
+			<div className="flex gap-4 justify-center">
 			<DownloadButton
 			data={participants}
-			style={{ marginTop: '20px' }}
 			fileName={downloadFileName}
 			/>
 			<DownloadButton
 			data={participants}
 			format="json"
-			style={{ marginTop: '20px', marginLeft: '10px' }}
 			fileName={downloadFileName}
 			/>
+			</div>
 			</>
 		)}
 
 		{!loading && !error && participants.length === 0 && !raffleId.trim() && (
-			<p style={{ textAlign: 'center', margin: '20px 0' }}>
+			<p className="text-center my-8 text-brand-dark/80">
 			Enter a Raffle ID/Address and click "Fetch Participants" to see the results.
 			</p>
 		)}

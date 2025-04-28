@@ -1,4 +1,5 @@
 import React from 'react';
+import { clsx } from 'clsx';
 
 interface ParticipantData {
 	userWalletAddress: string;
@@ -78,12 +79,19 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 
 	const isDisabled = !data || data.length === 0;
 
+	const combinedClassName = clsx(
+		'inline-flex items-center justify-center whitespace-nowrap rounded-brand text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-sans',
+		'h-10 px-4 py-2',
+		'bg-brand-orange text-brand-white hover:bg-brand-orange/90',
+		className
+	);
+
 	return (
 		<button
 		onClick={handleDownload}
 		style={style}
 		disabled={isDisabled}
-		className={className ? className : `inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-green-500 text-white hover:bg-green-600`}
+		className={combinedClassName}
 		>
 		Download as {format.toUpperCase()}
 		</button>
