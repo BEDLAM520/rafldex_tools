@@ -1,35 +1,41 @@
 import React from 'react';
 
-interface EntrantData {
-	address: string;
+interface ParticipantData {
+	userWalletAddress: string;
+	ticketsBought: number;
 }
 
 interface TableProps {
-	data: EntrantData[];
+	data: ParticipantData[];
 	className?: string;
 }
 
 export const Table: React.FC<TableProps> = ({ data, className }) => {
 	if (!Array.isArray(data) || data.length === 0) {
-		return <p>No entrant data available.</p>;
+		return <p>No participant data available.</p>;
 	}
 
-	const header = "Entrant Address";
+	const headers = ["Wallet Address", "Tickets Bought"];
 
 	return (
 		<table className={`min-w-full border-collapse table-auto ${className}`}>
 		<thead>
 		<tr>
-		<th className="px-4 py-2 border-b text-left font-semibold">
-		{header}
-		</th>
+		{headers.map((header, index) => (
+			<th key={index} className="px-4 py-2 border-b text-left font-semibold">
+			{header}
+			</th>
+		))}
 		</tr>
 		</thead>
 		<tbody>
 		{data.map((row, rowIndex) => (
 			<tr key={rowIndex} className="hover:bg-gray-50">
 			<td className="px-4 py-2 border-b font-mono text-sm">
-			{row.address}
+			{row.userWalletAddress}
+			</td>
+			<td className="px-4 py-2 border-b text-sm text-right">
+			{row.ticketsBought}
 			</td>
 			</tr>
 		))}

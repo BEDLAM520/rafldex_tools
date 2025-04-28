@@ -1,11 +1,12 @@
 import React from 'react';
 
-interface EntrantData {
-	address: string;
+interface ParticipantData {
+	userWalletAddress: string;
+	ticketsBought: number;
 }
 
 interface DownloadButtonProps {
-	data: EntrantData[];
+	data: ParticipantData[];
 	format?: 'csv' | 'json';
 	className?: string;
 	style?: React.CSSProperties;
@@ -54,15 +55,18 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 		}
 	};
 
-	const convertToCSV = (arr: EntrantData[]): string => {
+	const convertToCSV = (arr: ParticipantData[]): string => {
 		if (!arr || arr.length === 0) return '';
 
 		try {
-			const headerRow = '"Entrant Address"';
+			const headers = ['userWalletAddress', 'ticketsBought'];
+			const headerRow = headers.map(h => `"${h}"`).join(',');
 
-			const dataRows = arr.map(row =>
-				`"${String(row.address || '').replace(/"/g, '""')}"`
-			);
+			const dataRows = arr.map(row => {
+				const wallet = `"${String(row.userWalletAddress || '').replace(/"/g, '""')}"`;
+				const tickets = `"${String(row.ticketsBought ?? '')}"`;
+				return [wallet, tickets].join(',');
+			});
 
 			return [headerRow, ...dataRows].join('\n');
 		}
@@ -79,7 +83,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 		onClick={handleDownload}
 		style={style}
 		disabled={isDisabled}
-		className={`px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+		className={className ? className : `inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-green-500 text-white hover:bg-green-600`}
 		>
 		Download as {format.toUpperCase()}
 		</button>

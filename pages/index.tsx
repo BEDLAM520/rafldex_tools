@@ -6,23 +6,29 @@ import { Table } from '@/components/ui/table';
 import { DownloadButton } from '@/components/ui/downloadButton';
 import { LoadingSpinner } from '@/components/ui/loadingSpinner';
 
-interface EntrantData {
-	address: string;
+interface ParticipantData {
+	userWalletAddress: string;
+	ticketsBought: number;
 }
 
-interface ApiSuccessResponse {
-	entrants: string[];
+interface RawParticipantData {
+	userWalletAddress: string;
+	ticketsBought: number;
+	[key: string]: any;
 }
+
+type RafldexApiResponse = RawParticipantData[];
 
 interface ApiErrorResponse {
-	error: string;
+	error?: string;
 	details?: string;
+	message?: string;
 }
 
 const IndexPage: React.FC = () => {
 	const [raffleId, setRaffleId] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false);
-	const [participants, setParticipants] = useState<EntrantData[]>([]);
+	const [participants, setParticipants] = useState<ParticipantData[]>([]);
 	const [error, setError] = useState<string | null>(null);
 	const [cooldown, setCooldown] = useState<number>(0);
 
@@ -54,52 +60,82 @@ const IndexPage: React.FC = () => {
 		setError(null);
 
 		try {
-			const queryParams = new URLSearchParams({ raffleId: trimmedRaffleId });
-			const apiUrl = `/api/fetch_entries?${queryParams.toString()}`;
-			console.log(`Fetching from: ${apiUrl}`);
+			const externalApiUrl = `https://api.rafldex.io/raffle-participants/${trimmedRaffleId}`;
+			console.log(`Frontend requesting directly from: ${externalApiUrl}`);
 
-			const response = await fetch(apiUrl);
+			const response = await fetch(externalApiUrl, {
+				method: 'GET',
+				headers: {
+					'Accept': 'application/json',
+				}
+			});
+
+			console.log('Frontend received response status:', response.status);
 
 			if (!response.ok) {
 				let errorMessage = `Request failed with status ${response.status}`;
 				try {
 					const errorData: ApiErrorResponse = await response.json();
-					errorMessage = errorData?.error || errorMessage;
+					errorMessage = errorData?.error || errorData?.message || errorMessage;
 					if (errorData?.details) {
 						errorMessage += ` (${errorData.details})`;
 					}
-					console.error("API Error Response:", errorData);
+					console.error("External API Error Response:", errorData);
 				} catch (parseError) {
 					errorMessage = `${response.status} ${response.statusText || 'Error'}`;
+					console.error("Failed to parse error response:", await response.text());
 				}
+
+				if (response.status === 404) {
+					errorMessage = "Raffle ID/Address not found on Rafldex API.";
+
+					errorMessage = "Rate limit exceeded on Rafldex API. Please wait.";
+				}
+
 				throw new Error(errorMessage);
 			}
 
-			const result: ApiSuccessResponse = await response.json();
+			const result: RafldexApiResponse = await response.json();
+			console.log('Frontend parsed JSON result:', result);
 
-			const fetchedParticipants = Array.isArray(result.entrants)
-			? result.entrants.map(addr => ({ address: addr }))
+			const fetchedParticipants = Array.isArray(result)
+			? result.map(item => ({
+				userWalletAddress: item.userWalletAddress,
+				ticketsBought: item.ticketsBought
+			}))
 			: [];
+			console.log('Frontend processed participants:', fetchedParticipants);
 
-			setParticipants(fetchedParticipants);
+			const validParticipants = fetchedParticipants.filter(
+				p => p.userWalletAddress && typeof p.ticketsBought === 'number'
+			);
 
-			if (fetchedParticipants.length === 0) {
+			setParticipants(validParticipants);
+
+			if (validParticipants.length === 0 && Array.isArray(result) && result.length > 0) {
+				setError("Fetched data, but could not extract valid participant info (missing userWalletAddress or ticketsBought).");
+			} else if (validParticipants.length === 0) {
 				setError("No participants found for the provided Raffle ID/Address.");
 			}
 
 		} catch (err: unknown) {
-			console.error("Failed to fetch participants:", err);
-			let specificError = "An unknown error occurred.";
+			console.error("Failed to fetch participants directly:", err);
+			let specificError = "An unknown error occurred while fetching from Rafldex API.";
 			if (err instanceof Error) {
-				if (err.message.includes('429') || err.message.toLowerCase().includes('rate limit')) {
-					specificError = "Rate limit exceeded. Please wait a few seconds before retrying.";
-				} else if (err.message.includes('404') || err.message.toLowerCase().includes('not found')) {
-					specificError = "Raffle ID/Address not found.";
-				} else {
+				if (err.message.includes('Failed to fetch')) {
+					specificError = "Network error: Could not reach Rafldex API. Check connection or CORS policy.";
+				} else if (err.message.includes('invalid json')) {
+					specificError = "Received invalid JSON response from Rafldex API.";
+				}
+				else {
 					specificError = err.message;
 				}
 			}
-			setError(specificError);
+			if (specificError.includes('Network error')) {
+				setError("Could not fetch directly from Rafldex API. This might be a CORS issue. The external API might not allow direct browser requests.");
+			} else {
+				setError(specificError);
+			}
 			setParticipants([]);
 		} finally {
 			setLoading(false);
@@ -107,14 +143,13 @@ const IndexPage: React.FC = () => {
 		}
 	}, [raffleId]);
 
-	const isDownloadDisabled = participants.length === 0;
-	const downloadFileName = `raffle_${raffleId.substring(0, 8) || 'export'}_participants`;
+	const downloadFileName = `raffle_${raffleId.substring(0, 8) || 'export'}_participants_tickets`;
 
 	return (
 		<div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
 		<Card style={{ marginBottom: '20px', padding: '20px' }}>
 		<h1>Raffle Participant Snapshot</h1>
-		<p style={{ marginBottom: '15px' }}>Enter the Raffle ID/Address below to fetch participants.</p>
+		<p style={{ marginBottom: '15px' }}>Enter the Raffle ID/Address below to fetch participants and their ticket counts.</p>
 
 		<div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', gap: '10px' }}>
 		<label htmlFor="raffleIdInput" className="sr-only">
@@ -165,6 +200,11 @@ const IndexPage: React.FC = () => {
 			<Table data={participants} className="mb-4" />
 			<DownloadButton
 			data={participants}
+			style={{ marginTop: '20px' }}
+			fileName={downloadFileName}
+			/>
+			<DownloadButton
+			data={participants}
 			format="json"
 			style={{ marginTop: '20px', marginLeft: '10px' }}
 			fileName={downloadFileName}
@@ -172,15 +212,9 @@ const IndexPage: React.FC = () => {
 			</>
 		)}
 
-		{!loading && !error && participants.length === 0 && !raffleId && (
+		{!loading && !error && participants.length === 0 && !raffleId.trim() && (
 			<p style={{ textAlign: 'center', margin: '20px 0' }}>
 			Enter a Raffle ID/Address and click "Fetch Participants" to see the results.
-			</p>
-		)}
-
-		{!loading && !error && participants.length === 0 && raffleId && (
-			<p style={{ textAlign: 'center', margin: '20px 0' }}>
-			No participants found for the specified Raffle ID/Address.
 			</p>
 		)}
 		</div>
