@@ -80,9 +80,9 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 	const isDisabled = !data || data.length === 0;
 
 	const combinedClassName = clsx(
-		'inline-flex items-center justify-center whitespace-nowrap rounded-brand text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-sans',
+		'inline-flex items-center justify-center whitespace-nowrap rounded-brand text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-sans',
 		'h-10 px-4 py-2',
-		'bg-brand-orange text-brand-white hover:bg-brand-orange/90',
+		'bg-brand-green text-brand-dark hover:bg-brand-green/90 dark:bg-brand-green dark:text-brand-dark dark:hover:bg-brand-green/90',
 		className
 	);
 

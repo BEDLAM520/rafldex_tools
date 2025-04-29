@@ -16,7 +16,7 @@ const sizeClasses: Record<SpinnerSize, string> = {
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'lg', className }) => {
 	const combinedClassName = clsx(
-		'border-brand-orange',
+		'border-brand-green',
 		'border-t-transparent',
 		'rounded-full',
 		'animate-spin',

@@ -4,12 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
+@layer base {
+	body {
+		@apply bg-brand-white dark:bg-brand-dark;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
 
-code {
-	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-	monospace;
+	code {
+		font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+		monospace;
+	}
 }

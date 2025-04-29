@@ -18,12 +18,12 @@ interface ButtonProps {
 
 const buttonVariants = {
 	variant: {
-		default: 'bg-brand-orange text-brand-white hover:bg-brand-orange/90',
-		destructive: 'bg-red-500 text-white hover:bg-red-600',
-		outline: 'border border-brand-dark bg-transparent text-brand-dark hover:bg-brand-orange hover:text-brand-white hover:border-brand-orange',
-		secondary: 'bg-brand-light-gray text-brand-dark hover:bg-brand-light-gray/80',
-		ghost: 'hover:bg-brand-orange/10 hover:text-brand-orange',
-		link: 'text-brand-orange underline-offset-4 hover:underline',
+		default: 'bg-brand-green text-brand-dark hover:bg-brand-green/90 dark:bg-brand-green dark:text-brand-dark dark:hover:bg-brand-green/90',
+		destructive: 'bg-red-500 text-white hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800',
+		outline: 'border border-brand-dark bg-transparent text-brand-dark hover:bg-brand-green hover:text-brand-dark dark:border-brand-light-gray dark:text-brand-light-gray dark:hover:bg-brand-green dark:hover:text-brand-dark dark:hover:border-brand-green',
+		secondary: 'bg-brand-light-gray text-brand-dark hover:bg-brand-light-gray/80 dark:bg-brand-dark/40 dark:text-brand-light-gray dark:hover:bg-brand-dark/60',
+		ghost: 'hover:bg-brand-green/10 hover:text-brand-green dark:hover:bg-brand-green/20 dark:hover:text-brand-green',
+		link: 'text-brand-green underline-offset-4 hover:underline',
 	},
 	size: {
 		default: 'h-10 px-4 py-2',
@@ -46,7 +46,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
 
 	const combinedClassName = clsx(
-		'inline-flex items-center justify-center whitespace-nowrap rounded-brand text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-sans',
+		'inline-flex items-center justify-center whitespace-nowrap rounded-brand text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-sans',
 		buttonVariants.variant[variant],
 		buttonVariants.size[size],
 		className

@@ -2,6 +2,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
+	darkMode: 'class',
 	content: [
 		'./pages/**/*.{js,ts,jsx,tsx,mdx}',
 		'./components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -17,7 +18,7 @@ module.exports = {
 		},
 		extend: {
 			colors: {
-				'brand-orange': '#FF6B00',
+				'brand-green': '#00FFA3',
 				'brand-dark': '#1A1A1A',
 				'brand-light-gray': '#F5F5F5',
 				'brand-white': '#FFFFFF',
@@ -27,7 +28,7 @@ module.exports = {
 			},
 			borderRadius: {
 				'brand': '8px',
-			} ,
+			},
 		},
 	},
 	plugins: [],
