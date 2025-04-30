@@ -9,11 +9,9 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({ children, className, style }) => {
 	const combinedClassName = clsx(
-		'bg-brand-light-gray',
+		'bg-font-dark',
 		'border',
-		'border-brand-dark/10',
-		'dark:bg-brand-dark',
-		'dark:border-brand-light-gray/10',
+		'border-brand-blue/30',
 		'rounded-brand',
 		'shadow-md',
 		'p-4',

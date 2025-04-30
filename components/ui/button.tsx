@@ -1,7 +1,7 @@
 import React from 'react';
 import { clsx } from 'clsx';
 
-type ButtonVariant = 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+export type ButtonVariant = 'default' | 'defaultAlt' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
 type ButtonSize = 'default' | 'sm' | 'lg' | 'icon';
 
 interface ButtonProps {
@@ -18,15 +18,16 @@ interface ButtonProps {
 
 const buttonVariants = {
 	variant: {
-		default: 'bg-brand-green text-brand-dark hover:bg-brand-green/90 dark:bg-brand-green dark:text-brand-dark dark:hover:bg-brand-green/90',
-		destructive: 'bg-red-500 text-white hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800',
-		outline: 'border border-brand-dark bg-transparent text-brand-dark hover:bg-brand-green hover:text-brand-dark dark:border-brand-light-gray dark:text-brand-light-gray dark:hover:bg-brand-green dark:hover:text-brand-dark dark:hover:border-brand-green',
-		secondary: 'bg-brand-light-gray text-brand-dark hover:bg-brand-light-gray/80 dark:bg-brand-dark/40 dark:text-brand-light-gray dark:hover:bg-brand-dark/60',
-		ghost: 'hover:bg-brand-green/10 hover:text-brand-green dark:hover:bg-brand-green/20 dark:hover:text-brand-green',
-		link: 'text-brand-green underline-offset-4 hover:underline',
+		default: 'border border-brand-green/50 bg-brand-green text-brand-dark hover:bg-brand-green/90',
+		defaultAlt: 'border border-brand-blue/50 bg-brand-blue text-brand-white hover:bg-brand-blue/90',
+		destructive: 'border border-red-200 bg-red-500 text-brand-dark hover:bg-red-600',
+		outline: 'border border-brand-green bg-transparent text-color-active hover:bg-brand-green hover:text-brand-dark',
+		secondary: 'border border-brand-green/20 bg-brand-green/50 text-brand-dark hover:bg-brand-green/80',
+		ghost: 'border border-brand-blue/10 hover:bg-brand-green/10 hover:text-brand-dark',
+		link: 'text-color-active/80 underline-offset-4 hover:text-color-active hover:underline',
 	},
 	size: {
-		default: 'h-10 px-4 py-2',
+		default: 'h-10 rounded-brand px-4 py-2',
 		sm: 'h-9 rounded-brand px-3',
 		lg: 'h-11 rounded-brand px-8',
 		icon: 'h-10 w-10',

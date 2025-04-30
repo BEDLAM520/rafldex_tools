@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mohave:ital,wght@0,300..700;1,300..700&family=Sedgwick+Ave&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,13 +6,33 @@
 
 @layer base {
 	body {
-		@apply bg-brand-white dark:bg-brand-dark;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+		scrollbar-color: theme('colors.brand-green') theme('colors.brand-dark');
 	}
 
 	code {
 		font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 		monospace;
+	}
+
+	::-webkit-scrollbar {
+		width: 12px;
+		height: 12px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: theme('colors.brand-dark');
+		border-radius: 0px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background-color: theme('colors.brand-green');
+		border-radius: 6px;
+		border: 3px solid theme('colors.brand-dark');
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background-color: theme('colors.brand-green/80');
 	}
 }

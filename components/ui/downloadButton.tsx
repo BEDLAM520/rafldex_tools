@@ -1,5 +1,5 @@
 import React from 'react';
-import { clsx } from 'clsx';
+import { Button, ButtonVariant } from './button';
 
 interface ParticipantData {
 	userWalletAddress: string;
@@ -12,14 +12,42 @@ interface DownloadButtonProps {
 	className?: string;
 	style?: React.CSSProperties;
 	fileName?: string;
+	showTickets: boolean;
+	variant?: ButtonVariant;
 }
+
+const convertToCSV = (arr: ParticipantData[], includeTickets: boolean): string => {
+	if (!arr || arr.length === 0) return '';
+
+	try {
+		const headers = includeTickets
+		? ['userWalletAddress', 'ticketsBought']
+		: ['userWalletAddress'];
+		const headerRow = headers.map(h => `"${h}"`).join(',');
+
+		const dataRows = arr.map(row => {
+			const wallet = `"${String(row.userWalletAddress || '').replace(/"/g, '""')}"`;
+			const columns = includeTickets
+			? [wallet, `"${String(row.ticketsBought ?? '')}"`]
+			: [wallet];
+			return columns.join(',');
+		});
+
+		return [headerRow, ...dataRows].join('\n');
+	} catch (error) {
+		console.error("Error converting data to CSV:", error);
+		throw new Error("Failed to convert data to CSV format.");
+	}
+};
 
 export const DownloadButton: React.FC<DownloadButtonProps> = ({
 	data,
 	format = 'csv',
 	className,
 	style,
-	fileName = 'data'
+	fileName = 'data',
+	showTickets,
+	variant
 }) => {
 
 	const handleDownload = () => {
@@ -33,12 +61,16 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 		const fileExtension = format;
 
 		try {
+			const sourceData = data;
+
 			if (format === 'json') {
-				blobContent = JSON.stringify(data, null, 2);
+				const jsonData = showTickets
+				? sourceData
+				: sourceData.map(({ userWalletAddress }) => ({ userWalletAddress }));
+				blobContent = JSON.stringify(jsonData, null, 2);
 				mimeType = 'application/json';
-			}
-			else {
-				blobContent = convertToCSV(data);
+			} else {
+				blobContent = convertToCSV(sourceData, showTickets);
 				mimeType = 'text/csv';
 			}
 
@@ -50,50 +82,24 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 			link.click();
 			document.body.removeChild(link);
 			URL.revokeObjectURL(link.href);
-		}
-		catch (error) {
+
+		} catch (error) {
 			console.error(`Error preparing download data as ${format}:`, error);
-		}
-	};
-
-	const convertToCSV = (arr: ParticipantData[]): string => {
-		if (!arr || arr.length === 0) return '';
-
-		try {
-			const headers = ['userWalletAddress', 'ticketsBought'];
-			const headerRow = headers.map(h => `"${h}"`).join(',');
-
-			const dataRows = arr.map(row => {
-				const wallet = `"${String(row.userWalletAddress || '').replace(/"/g, '""')}"`;
-				const tickets = `"${String(row.ticketsBought ?? '')}"`;
-				return [wallet, tickets].join(',');
-			});
-
-			return [headerRow, ...dataRows].join('\n');
-		}
-		catch (error) {
-			console.error("Error converting data to CSV:", error);
-			throw new Error("Failed to convert data to CSV format.");
 		}
 	};
 
 	const isDisabled = !data || data.length === 0;
 
-	const combinedClassName = clsx(
-		'inline-flex items-center justify-center whitespace-nowrap rounded-brand text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-sans',
-		'h-10 px-4 py-2',
-		'bg-brand-green text-brand-dark hover:bg-brand-green/90 dark:bg-brand-green dark:text-brand-dark dark:hover:bg-brand-green/90',
-		className
-	);
-
 	return (
-		<button
+		<Button
 		onClick={handleDownload}
 		style={style}
 		disabled={isDisabled}
-		className={combinedClassName}
+		className={className}
+		variant={variant}
+		size="default"
 		>
 		Download as {format.toUpperCase()}
-		</button>
+		</Button>
 	);
 };

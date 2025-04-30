@@ -9,15 +9,13 @@ interface LoadingSpinnerProps {
 }
 
 const sizeClasses: Record<SpinnerSize, string> = {
-	sm: 'w-6 h-6 border-2 border-t-2',
-	md: 'w-10 h-10 border-4 border-t-4',
-	lg: 'w-16 h-16 border-4 border-t-4',
+	sm: 'w-6 h-6 border-2 border-brand-green/30 border-t-transparent',
+	md: 'w-10 h-10 border-4 border-brand-green/30 border-t-transparent',
+	lg: 'w-16 h-16 border-4 border-brand-green/30 border-t-transparent',
 };
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'lg', className }) => {
 	const combinedClassName = clsx(
-		'border-brand-green',
-		'border-t-transparent',
 		'rounded-full',
 		'animate-spin',
 		sizeClasses[size],
