@@ -14,17 +14,17 @@ interface DownloadButtonProps {
 	fileName?: string;
 	showTickets: boolean;
 	variant?: ButtonVariant;
+	children?: React.ReactNode;
+	disabled?: boolean;
 }
 
 const convertToCSV = (arr: ParticipantData[], includeTickets: boolean): string => {
 	if (!arr || arr.length === 0) return '';
-
 	try {
 		const headers = includeTickets
 		? ['userWalletAddress', 'ticketsBought']
 		: ['userWalletAddress'];
 		const headerRow = headers.map(h => `"${h}"`).join(',');
-
 		const dataRows = arr.map(row => {
 			const wallet = `"${String(row.userWalletAddress || '').replace(/"/g, '""')}"`;
 			const columns = includeTickets
@@ -32,7 +32,6 @@ const convertToCSV = (arr: ParticipantData[], includeTickets: boolean): string =
 			: [wallet];
 			return columns.join(',');
 		});
-
 		return [headerRow, ...dataRows].join('\n');
 	} catch (error) {
 		console.error("Error converting data to CSV:", error);
@@ -47,7 +46,9 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 	style,
 	fileName = 'data',
 	showTickets,
-	variant
+	variant,
+	children,
+	disabled
 }) => {
 
 	const handleDownload = () => {
@@ -55,14 +56,11 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 			console.warn("No data available to download.");
 			return;
 		}
-
 		let blobContent: string;
 		let mimeType: string;
 		const fileExtension = format;
-
 		try {
 			const sourceData = data;
-
 			if (format === 'json') {
 				const jsonData = showTickets
 				? sourceData
@@ -73,7 +71,6 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 				blobContent = convertToCSV(sourceData, showTickets);
 				mimeType = 'text/csv';
 			}
-
 			const blob = new Blob([blobContent], { type: mimeType });
 			const link = document.createElement('a');
 			link.href = URL.createObjectURL(blob);
@@ -82,24 +79,23 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 			link.click();
 			document.body.removeChild(link);
 			URL.revokeObjectURL(link.href);
-
 		} catch (error) {
 			console.error(`Error preparing download data as ${format}:`, error);
 		}
 	};
 
-	const isDisabled = !data || data.length === 0;
+	const isEffectivelyDisabled = disabled || !data || data.length === 0;
 
 	return (
 		<Button
 		onClick={handleDownload}
 		style={style}
-		disabled={isDisabled}
+		disabled={isEffectivelyDisabled}
 		className={className}
 		variant={variant}
 		size="default"
 		>
-		Download as {format.toUpperCase()}
+		{children ? children : `Download as ${format.toUpperCase()}`}
 		</Button>
 	);
 };

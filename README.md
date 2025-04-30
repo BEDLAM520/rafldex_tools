@@ -2,29 +2,36 @@
 
 ## Introduction
 
-A web application built with Next.js (using Tailwind CSS v3) and deployed on Cloudflare Pages. It's designed to fetch raffle participant data directly from the Rafldex API based on a specific Raffle ID, display the participants, and allow exporting the data.
+A web application built with Next.js (using Tailwind CSS v3) and deployed on Cloudflare Pages. It's designed to fetch raffle participant data directly from the Rafldex API for one or more Raffle IDs, display the participants, aggregate data across raffles, and allow exporting the data.
 
 ## Features
 
-*   **Fetch Raffle Data:** Enter a Raffle ID/Address to retrieve participant wallet addresses and ticket counts directly from the Rafldex API.
-*   **Data Display:** Presents fetched participant data (`userWalletAddress` and optionally `ticketsBought`) in a clear, scrollable table.
-*   **Conditional Display:** Includes a checkbox to toggle the visibility of the "Tickets Bought" column in the table.
-*   **Data Export:** Allows downloading the fetched participant data (wallet address and tickets bought) as a CSV or JSON file.
-*   **Dark Mode:** Features a dark theme consistent with the Rafldex brand.
+*   **Fetch Multiple Raffle Data:** Enter one or more comma-separated Raffle IDs/Addresses to retrieve participant wallet addresses and ticket counts directly from the Rafldex API for each specified raffle.
+*   **Individual Raffle Display:** Presents fetched participant data (`userWalletAddress` and optionally `ticketsBought`) for each successfully fetched raffle in clear, scrollable tables.
+*   **Conditional Display:** Includes a checkbox to toggle the visibility of the "Tickets Bought" column in the tables.
+*   **Individual Data Export:** Allows downloading the participant data (wallet address and tickets bought) for *each individual raffle* as a CSV or JSON file.
+*   **Aggregated Data Export:** Provides "Download ALL" buttons (CSV/JSON) that combine data from *all* successfully fetched raffles. This export:
+    *   Identifies unique wallet addresses across all raffles.
+    *   Sums the total `ticketsBought` for each unique address.
+    *   Purges duplicate address entries, providing a clean list with aggregated ticket counts.
+*   **Status Indicators:** Shows loading states and error messages for each raffle fetch attempt.
 *   **Edge Deployment:** Hosted on Cloudflare Pages for global performance and low latency.
 
 ## How it Works
 
-This application simplifies fetching raffle data:
+This application simplifies fetching and consolidating raffle data:
 
 1.  **Frontend (Cloudflare Pages):**
     *   A Next.js application provides the user interface, styled with Tailwind CSS.
     *   It's built and deployed to Cloudflare Pages.
-    *   When a user enters a Raffle ID and clicks "Fetch Participants", the frontend sends a direct request to the public Rafldex API (`https://api.rafldex.io/raffle-participants/{raffleId}`).
+    *   When a user enters one or more Raffle IDs (comma-separated) and clicks "Fetch Participants", the frontend sends parallel requests to the public Rafldex API (`https://api.rafldex.io/raffle-participants/{raffleId}`) for each ID.
 2.  **Rafldex API:**
-    *   The external Rafldex API processes the request and returns the participant data for the specified raffle.
-3.  **Data Flow:**
-    *   User Interaction (Input + Click) -> Frontend API Request (to Rafldex API) -> Rafldex API Response -> Frontend (Processes, Displays Data, Enables Export).
+    *   The external Rafldex API processes each request and returns the participant data for the specified raffle.
+3.  **Data Flow & Processing:**
+    *   User Interaction (Input + Click) -> Frontend API Requests (to Rafldex API for each ID) -> Rafldex API Responses -> Frontend:
+        *   Processes and displays data for each raffle individually.
+        *   Enables individual downloads per raffle.
+        *   For "Download ALL": Aggregates data across all successful fetches, summing tickets for duplicate addresses before enabling the combined download.
 
 ## Technology Stack
 
@@ -49,7 +56,7 @@ This application simplifies fetching raffle data:
     # yarn install
     ```
 3.  **Environment Variables:**
-    *   No specific environment variables (`.env.local`) are required for the core functionality as the application now calls the public Rafldex API directly from the frontend.
+    *   No specific environment variables (`.env.local`) are required for the core functionality as the application calls the public Rafldex API directly from the frontend.
 4.  **Run the Frontend Development Server:**
     ```bash
     npm run dev

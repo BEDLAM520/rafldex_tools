@@ -207,6 +207,24 @@ const IndexPage: React.FC = () => {
 	const downloadFileNameBase = currentDisplayId ? `raffle_${currentDisplayId.substring(0, 8)}` : 'participants';
 	const downloadFileName = `${downloadFileNameBase}_${showTickets ? 'tickets' : 'wallets'}`;
 
+	const aggregatedDataMap = new Map<string, number>();
+
+	displayableResultIds.forEach(id => {
+		const raffleData = results[id] || [];
+		raffleData.forEach(participant => {
+			const currentTickets = aggregatedDataMap.get(participant.userWalletAddress) || 0;
+			aggregatedDataMap.set(participant.userWalletAddress, currentTickets + participant.ticketsBought);
+		});
+	});
+
+	const allData: ParticipantData[] = Array.from(aggregatedDataMap.entries()).map(
+		([userWalletAddress, ticketsBought]) => ({
+			userWalletAddress,
+			ticketsBought,
+		})
+	);
+	const allDownloadFileName = `all_raffles_${showTickets ? 'tickets' : 'wallets'}`;
+
 	return (
 		<div className="container mx-auto font-sans min-h-screen flex flex-col items-center">
 
@@ -354,6 +372,31 @@ const IndexPage: React.FC = () => {
 			<Button onClick={handleNextPage} disabled={currentPage === totalPages - 1} variant="outline" size="sm">
 			NEXT
 			</Button>
+			</div>
+		)}
+
+		{!isLoading && totalPages > 1 && (
+			<div className="flex gap-4 justify-center mt-4 pt-4 border-t border-brand-blue/20">
+			<DownloadButton
+			data={allData}
+			fileName={allDownloadFileName}
+			showTickets={showTickets}
+			format="csv"
+			variant="default"
+			disabled={allData.length === 0}
+			>
+			Download ALL CSV
+			</DownloadButton>
+			<DownloadButton
+			data={allData}
+			fileName={allDownloadFileName}
+			showTickets={showTickets}
+			format="json"
+			variant="defaultAlt"
+			disabled={allData.length === 0}
+			>
+			Download ALL JSON
+			</DownloadButton>
 			</div>
 		)}
 
