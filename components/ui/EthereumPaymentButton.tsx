@@ -5,6 +5,11 @@ import { Button } from './button';
 const EthereumPaymentButton: React.FC = () => {
 	const isMobile = /Mobi|Android/i.test(typeof navigator !== 'undefined' ? navigator.userAgent : '');
 	const address = '0xdece49eF08A75f02499d965a36eEAEfFCdD3D483';
+
+	const truncateAddress = (addr: string, start = 6, end = 6) => {
+		return `${addr.slice(0, start)}...${addr.slice(-end)}`;
+	};
+
 	const paymentLink = `ethereum:${address}`;
 
 	const handleClick = () => {
@@ -38,6 +43,10 @@ const EthereumPaymentButton: React.FC = () => {
 			<QRCodeSVG value={paymentLink} size={200} />
 			<p className="text-center text-color-active">Or click the button below if you have a browser wallet extension:</p>
 			<a href={paymentLink} style={{ color: '#6f4e37' }}>Open in Wallet</a>
+			<p className="text-center text-color-active">Or copy the wallet address below:</p>
+							<p style={{ color: '#6f4e37', wordWrap: 'break-word' }} title={address}>
+								{truncateAddress(address)}
+							</p>
 			</div>
 		)}
 		</div>
