@@ -1,8 +1,8 @@
 # Rafldex Snapshot Tool For Hosts by BEDLAM520 Development
 
-### v1.3.0 - Updated May 1, 2025
+### v1.5.0 - Updated May 1, 2024
 
-## Introduction
+## Introduction & Purpose
 
 A web application built with Next.js (using Tailwind CSS v3) and deployed on Cloudflare Pages. It's designed to fetch raffle participant data directly from the Rafldex API for one or more Raffle IDs, display the participants, aggregate data across raffles, and allow exporting the data.
 
@@ -14,6 +14,8 @@ A web application built with Next.js (using Tailwind CSS v3) and deployed on Clo
 *   **Individual Data Export:** Allows downloading the participant data (wallet address and tickets bought) for *each individual raffle* as a CSV or JSON file.
 *   **Aggregated Data Export:** Provides "Download ALL" buttons (CSV/JSON) that combine data from *all* successfully fetched raffles. This export:
     *   Identifies unique wallet addresses across all raffles.
+*   **Support the Developer:** Includes a "Buy Me a Coffee" page with options to support the tool's development via various crypto and fiat methods.
+*   **Installable PWA:** Configured as a Progressive Web App (PWA), allowing users to install it on their devices for easier access and potential offline capabilities (depending on browser caching).
     *   Sums the total `ticketsBought` for each unique address.
     *   Purges duplicate address entries, providing a clean list with aggregated ticket counts.
 *   **Status Indicators:** Shows loading states and error messages for each raffle fetch attempt.
@@ -41,6 +43,7 @@ This application simplifies fetching and consolidating raffle data:
     *   **Framework:** Next.js, React, TypeScript
     *   **Styling:** Tailwind CSS v3
     *   **UI Components:** Custom components (`@/components/ui`)
+    *   **PWA:** `next-pwa`
 *   **Deployment:**
     *   Cloudflare Pages
 
@@ -66,6 +69,13 @@ This application simplifies fetching and consolidating raffle data:
     # yarn dev
     ```
     Open `http://localhost:3000` (or the specified port) in your browser.
+
+## Progressive Web App (PWA) Features
+
+This application is configured as a PWA. Depending on your browser (primarily Chrome-based browsers on Desktop/Android and Safari on iOS), you may see an option to "Install" the application. This adds an icon to your home screen or app drawer for quick access, similar to a native app.
+
+*   **Installation:** Look for an install icon in the address bar or an "Add to Home Screen" option in the browser menu.
+*   **Offline Access:** Basic offline access might be available for previously visited pages due to service worker caching configured via `next-pwa`.
 
 ## Deployment
 

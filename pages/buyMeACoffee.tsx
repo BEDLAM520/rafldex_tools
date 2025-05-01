@@ -9,84 +9,49 @@ import { Card } from '@/components/ui/card';
 
 const BuyMeACoffee: React.FC = () => {
 	return (
-		<div className="container mx-auto text-center font-sans min-h-screen flex flex-col items-center">
-		<div
-		style={{
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-			padding: '40px 20px',
-			fontFamily: 'Mohave',
-			gap: '20px',
-		}}
-		>
-		<img
-		src="/images/coffee.png"
-		alt="Coffee Cup Logo"
-		style={{ width: '150px', marginTop: '20px', marginBottom: '20px' }}
-		/>
-		<h1 className="text-center text-3xl font-bold my-2 text-color-active">Help me help you!</h1>
-		<h2 className="text-center text-3xl font-bold my-2 text-color-active">Buy me a coffee!</h2>
-		<h3 className="text-center text-3xl font-bold my-2 text-color-active">Be a lot cooler if you did!</h3>
+		<div className="container mx-auto px-4 py-10 text-center font-sans min-h-screen flex flex-col items-center">
+			<div className="flex flex-col items-center gap-5 w-full max-w-4xl">
+				<img
+					src="/images/coffee.png"
+					alt="Coffee Cup Logo"
+					className="w-32 md:w-40 mt-5 mb-5"
+				/>
+				<h1 className="text-3xl md:text-4xl font-bold text-color-active">Help me help you!</h1>
+				<h2 className="text-2xl md:text-3xl font-bold text-color-active">Buy me a coffee!</h2>
+				<h3 className="text-xl md:text-2xl font-bold text-color-active">Be a lot cooler if you did!</h3>
 
-		<div
-		style={{
-			display: 'flex',
-			flexDirection: 'row',
-			alignItems: 'center',
-			gap: '20px',
-			marginTop: '30px',
-			marginBottom: '30px',
-			width: '100%',
-			justifyContent: 'center',
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		}}
-		>
-		<Card title="Ethereum" className="mx-auto text-center w-full max-w-xs">
-		<EthereumPaymentButton />
-		</Card>
-		<Card title="Solana" className="mx-auto text-center w-full max-w-xs">
-		<SolanaPaymentButton />
-		</Card>
-		<Card title="Sui" className="mx-auto text-center w-full max-w-xs">
-		<SuiPaymentButton />
-		</Card>
-		</div>
+		<div className="flex flex-col md:flex-row items-stretch justify-center gap-5 md:gap-8 mt-8 mb-4 w-full">
+					<Card title="Ethereum" className="flex flex-col text-center w-full md:w-1/3">
+						<EthereumPaymentButton />
+					</Card>
+					<Card title="Solana" className="flex flex-col text-center w-full md:w-1/3">
+						<SolanaPaymentButton />
+					</Card>
+					<Card title="Sui" className="flex flex-col text-center w-full md:w-1/3">
+						<SuiPaymentButton />
+					</Card>
+				</div>
 
-		<div
-		style={{
-			display: 'flex',
-			flexDirection: 'row',
-			alignItems: 'center',
-			gap: '20px',
-			marginTop: '30px',
-			marginBottom: '30px',
-			width: '100%',
-			justifyContent: 'center',
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		}}
-		>
-		<Card title="PayPal" className="mx-auto text-center w-full max-w-xs">
-		<PayPalPaymentButton />
-		</Card>
-		<Card title="CashApp" className="mx-auto text-center w-full max-w-xs">
-		<CashAppPaymentButton />
-		</Card>
-		</div>
+		<div className="flex flex-col md:flex-row items-stretch justify-center gap-5 md:gap-8 my-4 w-full md:w-2/3 lg:w-1/2">
+					<Card title="PayPal" className="flex flex-col text-center w-full md:w-1/2">
+						<PayPalPaymentButton />
+					</Card>
+					<Card title="CashApp" className="flex flex-col text-center w-full md:w-1/2">
+						<CashAppPaymentButton />
+					</Card>
+				</div>
 
-		<div className="align-center flex flex-row justify-center mt-4 mb-6">
-		<Link
-		href="https://x.com/bedlam520"
-		target="_blank"
-		rel="noopener noreferrer"
-		className="text-brand-white/80 hover:text-brand-white hover:underline"
-		>
-		Or Tip Me on X!
-		</Link>
-		</div>
-		</div>
+		<div className="mt-6 mb-8">
+					<Link
+						href="https://x.com/bedlam520"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="text-brand-white/80 hover:text-brand-white hover:underline"
+					>
+						Or Tip Me on X!
+					</Link>
+				</div>
+			</div>
 		</div>
 	);
 };
