@@ -9,30 +9,17 @@ const SuiPaymentButton: React.FC = () => {
 	};
 
 	return (
-		<div style={{
-			textAlign: 'center',
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-			gap: 10,
-			height: '400px',
-			width: '300px',
-			justifyContent: 'space-between',
-			padding: '20px',
-			marginBottom: '10px',
-			marginLeft: 'auto',
-			marginRight: 'auto',
-			maxWidth: '400px',
-			backgroundColor: 'font-dark'
-		}}>:
-			<div style={{ display: 'flex', flexDirection: 'column', position: 'relative', alignItems: 'center', gap: 10 }}>
-				<p className="text-center text-color-active">Scan this QR code to send SUI to:</p>
-					<QRCodeSVG value={address} size={200} />
-						<p className="text-center text-color-active">Or copy the wallet address below:</p>
-							<p style={{ color: '#6f4e37', wordWrap: 'break-word' }} title={address}>
-								{truncateAddress(address)}
-							</p>
-			</div>
+		<div className="flex h-full flex-col items-center justify-center gap-4 p-4 text-center">
+		<div className="flex flex-col items-center gap-3">:
+		<div style={{ display: 'flex', flexDirection: 'column', position: 'relative', alignItems: 'center', gap: 10 }}>
+		<p className="text-center text-color-active">Scan this QR code to send SUI to:</p>
+		<QRCodeSVG value={address} size={180} className="max-w-full" />
+		<p className="text-center text-color-active">Or copy the wallet address below:</p>
+		<p className="text-yellow-800 break-words dark:text-yellow-300" title={address}>
+		{truncateAddress(address)}
+		</p>
+		</div>
+		</div>
 		</div>
 	);
 };
