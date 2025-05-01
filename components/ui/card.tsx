@@ -22,7 +22,7 @@ export const Card: React.FC<CardProps> = ({ children, className, title, style })
 	return (
 		<div style={style} className={combinedClassName}>
 		{title && (
-			<h3 className="text-lg font-semibold mb-2 text-brand-blue">{title}</h3>
+			<h3 className="text-lg font-semibold text-brand-blue">{title}</h3>
 		)}
 		{children}
 		</div>

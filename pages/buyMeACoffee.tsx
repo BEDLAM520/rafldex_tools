@@ -20,23 +20,23 @@ const BuyMeACoffee: React.FC = () => {
 				<h2 className="text-2xl md:text-3xl font-bold text-color-active">Buy me a coffee!</h2>
 				<h3 className="text-xl md:text-2xl font-bold text-color-active">Be a lot cooler if you did!</h3>
 
-		<div className="flex flex-col md:flex-row items-stretch justify-center gap-5 md:gap-8 mt-8 mb-4 w-full">
-					<Card title="Ethereum" className="flex flex-col text-center w-full md:w-1/3">
+		<div className="flex flex-row md:flex-row items-stretch position-relative justify-center gap-3 md:gap-5 mt-8 mb-4 w-full">
+					<Card title="Ethereum" className="flex flex-col position-relative text-center w-100 md:w-1/3">
 						<EthereumPaymentButton />
 					</Card>
-					<Card title="Solana" className="flex flex-col text-center w-full md:w-1/3">
+					<Card title="Solana" className="flex flex-col position-relative text-center w-100 md:w-1/3">
 						<SolanaPaymentButton />
 					</Card>
-					<Card title="Sui" className="flex flex-col text-center w-full md:w-1/3">
+					<Card title="Sui" className="flex flex-col position-relative text-center w-100 md:w-1/3">
 						<SuiPaymentButton />
 					</Card>
 				</div>
 
-		<div className="flex flex-col md:flex-row items-stretch justify-center gap-5 md:gap-8 my-4 w-full md:w-2/3 lg:w-1/2">
-					<Card title="PayPal" className="flex flex-col text-center w-full md:w-1/2">
+		<div className="flex flex-col md:flex-row items-stretch justify-center position-relative gap-3 md:gap-5 my-2 w-full md:w-2/3 lg:w-1/2">
+					<Card title="PayPal" className="flex flex-col position-relative text-center w-100 md:w-1/2">
 						<PayPalPaymentButton />
 					</Card>
-					<Card title="CashApp" className="flex flex-col text-center w-full md:w-1/2">
+					<Card title="CashApp" className="flex flex-col position-relative text-center w-100 md:w-1/2">
 						<CashAppPaymentButton />
 					</Card>
 				</div>
