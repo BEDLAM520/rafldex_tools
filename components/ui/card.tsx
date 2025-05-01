@@ -15,7 +15,7 @@ export const Card: React.FC<CardProps> = ({ children, className, title, style })
 		'border-brand-blue/30',
 		'rounded-brand',
 		'shadow-md',
-		'p-4',
+		'p-3',
 		'font-sans',
 	);
 

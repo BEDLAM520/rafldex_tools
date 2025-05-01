@@ -48,7 +48,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
 
 	const combinedClassName = clsx(
-		'flex position-relative items-center justify-center whitespace-nowrap rounded-brand text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-sans',
+		'flex position-relative items-center justify-between whitespace-nowrap rounded-brand text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-sans',
 		buttonVariants.variant[variant],
 		buttonVariants.size[size],
 		className

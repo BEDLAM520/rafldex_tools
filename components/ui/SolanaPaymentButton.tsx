@@ -7,10 +7,10 @@ const isMobile = /Mobi|Android/i.test(typeof navigator !== 'undefined' ? navigat
 const SolanaPaymentButton: React.FC = () => {
 	const address = '3aLmd45HzUk5bZfCR1uKsawyVNGjarSKCkEnvjETaAPk';
 
-		const [copyStatus, setCopyStatus] = useState<string | null>(null);
-		const truncateAddress = (addr: string, start = 6, end = 6) => {
-			return `${addr.slice(0, start)}...${addr.slice(-end)}`;
-		};
+	const [copyStatus, setCopyStatus] = useState<string | null>(null);
+	const truncateAddress = (addr: string, start = 6, end = 6) => {
+		return `${addr.slice(0, start)}...${addr.slice(-end)}`;
+	};
 
 	const paymentLink = `https://phantom.app/ul/send?recipient=${address}`;
 
@@ -33,30 +33,35 @@ const SolanaPaymentButton: React.FC = () => {
 	};
 
 	return (
-		<div className="flex h-full flex-col items-center justify-center gap-3 p-3 text-center position-relative">
+		<div className="flex h-full flex-col items-center justify-between gap-3 p-3 text-center">
 		{isMobile ? (
+			<div className="flex h-full items-center justify-center">
 			<Button onClick={handleClick}>Pay with Solana</Button>
+			</div>
 		) : (
-			<div className="flex flex-col items-center gap-3">
-			<p className="text-center text-color-active">Scan this QR code with your Solana wallet:</p>
+			<>
+			<div className="flex flex-col items-center gap-2">
+			<p className="text-center text-color-active text-sm">Scan QR with your SOL wallet:</p>
 			<QRCodeSVG value={address} size={180} className="max-w-full" />
-			<p className="text-center text-color-active">Or click the button below:</p>
-			<a href={paymentLink} style={{ color: '#6f4e37' }}>Open in Wallet</a>
-			<p className="text-center text-color-active">Or click the address below to copy:</p>
+			</div>
+
+			<div className="flex flex-col items-center gap-1 mt-2">
+			<p className="text-center text-color-active text-sm">Or use a browser wallet:</p>
+			<a href={paymentLink} target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:underline text-sm mb-2">Open in Wallet</a>
+			<p className="text-center text-color-active text-sm">Or click the address below to copy:</p>
 			<p
-				className="text-yellow-800 break-words dark:text-yellow-300 cursor-pointer hover:opacity-80"
-				title={address}
-				onClick={handleCopyAddress}
+			className="text-yellow-800 break-words dark:text-yellow-300 cursor-pointer hover:opacity-80 font-mono text-xs"
+			title={address}
+			onClick={handleCopyAddress}
 			>
 			{copyStatus === 'Copied!' ? <span className="text-green-500">Copied!</span> :
 				copyStatus === 'Failed!' ? <span className="text-red-500">Failed!</span> :
-			truncateAddress(address)
-			}
-			</p>
-			</div>
-		)}
-		</div>
-	);
-};
+				truncateAddress(address)}
+				</p>
+				</div>
+				</>)}
+				</div>
+			);
+		};
 
-export default SolanaPaymentButton;
+		export default SolanaPaymentButton;
