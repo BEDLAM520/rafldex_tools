@@ -3,6 +3,7 @@
 	"short_name": "Rafldex Tools",
 	"description": "Unofficial Tools for interacting with the Rafldex Platform API.",
 	"start_url": "/",
+	"id": "/",
 	"scope": "/",
 	"display": "standalone",
 	"background_color": "#1a1a2e",
@@ -12,32 +13,54 @@
 			"src": "/icons/android-chrome-512x512.png",
 			"sizes": "512x512",
 			"type": "image/png",
-			"purpose": "maskable"
+			"purpose": "any maskable"
 		},
 		{
 			"src": "/icons/android-chrome-192x192.png",
 			"sizes": "192x192",
 			"type": "image/png",
-			"purpose": "maskable"
+			"purpose": "any maskable"
 		},
 		{
 			"src": "/icons/apple-touch-icon.png",
 			"sizes": "180x180",
 			"type": "image/png",
-			"purpose": "maskable"
+			"purpose": "any"
 		},
 		{
 			"src": "/icons/favicon-32x32.png",
 			"sizes": "32x32",
 			"type": "image/png",
-			"purpose": "maskable"
+			"purpose": "any"
 		},
 		{
 			"src": "/icons/favicon-16x16.png",
 			"sizes": "16x16",
 			"type": "image/png",
-			"purpose": "maskable"
+			"purpose": "any"
 		}
-	]
+	],
+	"screenshots": [
+		{
+			"src": "/images/screenshot-desktop.png",
+			"sizes": "1280x720",
+			"type": "image/png",
+			"form_factor": "wide",
+			"label": "Home Screen on Desktop"
+		},
+		{
+			"src": "/images/screenshot-mobile.png",
+			"sizes": "540x720",
+			"type": "image/png",
+			"form_factor": "narrow",
+			"label": "Home Screen on Mobile"
+		}
+	],
+	"display_override": [
+		"window-controls-overlay"
+	],
+	"orientation": "portrait",
+	"theme_color_in_head": true,
+	"shortcuts": [],
+	"protocol_handlers": []
 }
-
