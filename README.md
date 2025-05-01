@@ -1,5 +1,7 @@
 # Rafldex Snapshot Tool For Hosts by BEDLAM520 Development
 
+### v1.3.0 - Updated May 1, 2025
+
 ## Introduction
 
 A web application built with Next.js (using Tailwind CSS v3) and deployed on Cloudflare Pages. It's designed to fetch raffle participant data directly from the Rafldex API for one or more Raffle IDs, display the participants, aggregate data across raffles, and allow exporting the data.

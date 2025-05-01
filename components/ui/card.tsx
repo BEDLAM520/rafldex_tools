@@ -4,10 +4,11 @@ import { clsx } from 'clsx';
 interface CardProps {
 	children?: React.ReactNode;
 	className?: string;
+	title?: React.ReactNode;
 	style?: React.CSSProperties;
 }
 
-export const Card: React.FC<CardProps> = ({ children, className, style }) => {
+export const Card: React.FC<CardProps> = ({ children, className, title, style }) => {
 	const combinedClassName = clsx(
 		'bg-font-dark',
 		'border',
@@ -16,11 +17,13 @@ export const Card: React.FC<CardProps> = ({ children, className, style }) => {
 		'shadow-md',
 		'p-4',
 		'font-sans',
-		className
 	);
 
 	return (
 		<div style={style} className={combinedClassName}>
+		{title && (
+			<h3 className="text-lg font-semibold mb-2 text-brand-blue">{title}</h3>
+		)}
 		{children}
 		</div>
 	);

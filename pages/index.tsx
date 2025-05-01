@@ -230,7 +230,7 @@ const IndexPage: React.FC = () => {
 
 		<div className="mb-6 w-full">
 		<Image
-		src="/rafldex-square-logo.svg"
+		src="/images/rafldex-square-logo.svg"
 		alt="Official Rafldex Logo"
 		width={200}
 		height={50}
@@ -247,7 +247,7 @@ const IndexPage: React.FC = () => {
 		<span className="text-brand-blue/80 text-1xl font-bold">*UNOFFICIAL*</span>
 		</div>
 
-		<Card className="w-full max-w-xl mb-4">
+		<Card className="bg-font-dark w-full max-w-xl mb-4">
 		<h1 className="text-center text-3xl font-bold mb-4 text-color-active">Rafldex Participants Snapshot</h1>
 		<p className="mb-4 text-center text-brand-blue/80">Enter Raffle ID(s)/Address(es) below.</p>
 
@@ -279,7 +279,7 @@ const IndexPage: React.FC = () => {
 		</div>
 		</Card>
 
-		<div className="mb-4">
+		<div className="mt-6 mb-4">
 		<Button
 		onClick={handleFetchData}
 		disabled={isLoading || cooldown > 0 || raffleIds.every(id => id.trim() === '')}
@@ -327,7 +327,7 @@ const IndexPage: React.FC = () => {
 		)}
 
 		{!isLoading && currentDisplayId && currentData.length > 0 && (
-			<Card className="mt-6">
+			<Card className="bg-font-dark mt-6">
 			<h2 className="text-lg font-semibold mb-3 text-center text-brand-blue/80">
 			Results for: <span className="font-mono text-sm">{currentDisplayId}</span> ({currentData.length} participants)
 			</h2>
@@ -410,6 +410,17 @@ const IndexPage: React.FC = () => {
 		<div className="mt-4 w-full border-t border-brand-blue/20 pt-2 text-center space-y-2">
 		<div className="text-sm text-brand-white/70">
 		2025 © Unofficial Rafldex Tools
+		</div>
+		<div className="flex justify-center items-center my-1">
+			<Link href="/buyMeACoffee" className="flex items-center space-x-1.5 text-brand-white/80 hover:text-brand-white hover:underline text-sm">
+				<Image
+					src="/images/coffee.png"
+					alt="Coffee Cup"
+					width={16}
+					height={16}
+				/>
+				<span>Buy Me A Coffee!</span>
+			</Link>
 		</div>
 		<div className="text-sm space-x-4">
 		<Link href="/terms" className="text-brand-white/80 hover:text-brand-white hover:underline">

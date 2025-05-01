@@ -14,6 +14,7 @@ interface ButtonProps {
 	size?: ButtonSize;
 	'aria-label'?: string;
 	style?: React.CSSProperties;
+	title?: React.ReactNode;
 }
 
 const buttonVariants = {
