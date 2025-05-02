@@ -24,7 +24,7 @@
 		"ts-node": "^10.9.2",
 		"typescript": "^5.8.3",
 		"rimraf": "^6.0.1",
-		"Glob": "^11.0.2",
+		"glob": "^11.0.2",
 		"workbox-cacheable-response": "^7.3.0",
 		"workbox-background-sync": "^7.3.0",
 		"workbox-google-analytics": "^7.3.0",
