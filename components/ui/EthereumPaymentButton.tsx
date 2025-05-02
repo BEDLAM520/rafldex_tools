@@ -63,4 +63,8 @@ const EthereumPaymentButton: React.FC = () => {
 	);
 };
 
+<<<<<<< HEAD
 export default EthereumPaymentButton;
+=======
+		export default EthereumPaymentButton;
+>>>>>>> 80b0cc131c29d3400086b32118b6e37463641936
