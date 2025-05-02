@@ -1,13 +1,13 @@
 {
 	"name": "Unofficial Rafldex Tools",
 	"short_name": "Rafldex Tools",
-	"description": "Unofficial Tools for interacting with the Rafldex Platform API.",
+	"description": "The Unofficial Rafldex Tools for interacting with the Official Rafldex Platform API.",
 	"start_url": "/",
 	"id": "/",
 	"scope": "/",
 	"display": "standalone",
-	"background_color": "#1a1a2e",
-	"theme_color": "#162447",
+	"background_color": "#0F1016",
+	"theme_color": "#2D3046",
 	"icons": [
 		{
 			"src": "/icons/android-chrome-512x512.png",

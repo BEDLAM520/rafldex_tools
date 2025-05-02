@@ -28,7 +28,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'lg', cla
 		role="status"
 		aria-label="Loading"
 		>
-		<span className="sr-only">Loading...</span>
+			<span className="sr-only">Loading...</span>
 		</div>
 	);
 };

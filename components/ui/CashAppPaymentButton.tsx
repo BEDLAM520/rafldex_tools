@@ -35,15 +35,15 @@ const CashAppPaymentButton: React.FC = () => {
 			textAlign: 'center',
 				marginTop: '20px',
 				marginBottom: '20px',
+				marginLeft: 'auto',
+				marginRight: 'auto',
 				display: 'flex',
 				position: 'relative',
 				flexDirection: 'column',
 				alignItems: 'center',
 				gap: '10px',
-				marginLeft: 'auto',
-				marginRight: 'auto',
 				maxWidth: '200px',
-				backgroundColor: 'font-dark'
+				backgroundColor: 'font-light'
 		}}>
 		{!showQrCode && (
 			<Button
@@ -64,7 +64,7 @@ const CashAppPaymentButton: React.FC = () => {
 					height={200}
 					style={{ borderRadius: '12px', maxWidth: '100%' }}
 				/>
-				<p style={{ marginTop: '10px' }} className="text-sm text-color-active/50">
+				<p style={{ marginTop: '10px' }} className="text-sm text-color-active/60">
 					<a href={cashAppUrl} target="_blank" rel="noopener noreferrer">
 						Pay on the Web
 					</a>

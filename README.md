@@ -1,6 +1,6 @@
 # Rafldex Snapshot Tool For Hosts by BEDLAM520 Development
 
-### v1.6.0 - Updated May 1, 2024
+### v1.7.0 - Updated May 1, 2024
 
 ## Introduction & Purpose
 

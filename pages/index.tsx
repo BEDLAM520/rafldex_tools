@@ -432,7 +432,6 @@ const IndexPage: React.FC = () => {
 		</Link>
 		</div>
 		</div>
-
 		</div>
 	);
 };

@@ -28,7 +28,7 @@ const buttonVariants = {
 		link: 'text-color-active/80 underline-offset-4 hover:text-color-active hover:underline',
 	},
 	size: {
-		default: 'h-10 rounded-brand px-3 py-3',
+		default: 'h-10 rounded-brand px-3 py-4',
 		sm: 'h-9 rounded-brand px-3',
 		lg: 'h-11 rounded-brand px-8',
 		icon: 'h-10 w-10',

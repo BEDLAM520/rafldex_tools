@@ -23,17 +23,15 @@ const SuiPaymentButton: React.FC = () => {
 
 	return (
 		<div className="flex h-full flex-col items-center justify-between gap-3 p-3 text-center">
-		{/* Top Section: QR Code and Info */}
 		<div className="flex flex-col items-center gap-2">
 		<p className="text-center text-color-active text-sm">Scan this QR code to send SUI to:</p>
 		<QRCodeSVG value={address} size={180} className="max-w-full" />
 		</div>
 
-		{/* Bottom Section: Copy Address */}
 		<div className="flex flex-col items-center gap-1 mt-2">
 		<p className="text-center text-color-active text-sm">Or click the address below to copy:</p>
 		<p
-		className="text-yellow-800 break-words dark:text-yellow-300 cursor-pointer hover:opacity-80 font-mono text-xs"
+		className="text-yellow-800 break-words dark:text-yellow-300 cursor-pointer hover:opacity-80 font-mono text-xs pb-2"
 		title={address}
 		onClick={handleCopyAddress}
 		>

@@ -88,14 +88,14 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 
 	return (
 		<Button
-		onClick={handleDownload}
-		style={style}
-		disabled={isEffectivelyDisabled}
-		className={className}
-		variant={variant}
-		size="default"
-		>
-		{children ? children : `Download as ${format.toUpperCase()}`}
+			onClick={handleDownload}
+			style={style}
+			disabled={isEffectivelyDisabled}
+			className={className}
+			variant={variant}
+			size="default"
+			>
+			{children ? children : `Download as ${format.toUpperCase()}`}
 		</Button>
 	);
 };

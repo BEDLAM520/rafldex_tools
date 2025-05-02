@@ -22,13 +22,13 @@ const PayPalPaymentButton = () => {
 				textAlign: 'center',
 				marginTop: '20px',
 				marginBottom: '20px',
+				marginLeft: 'auto',
+				marginRight: 'auto',
 				display: 'flex',
 				position: 'relative',
 				flexDirection: 'column',
 				alignItems: 'center',
 				gap: '10px',
-				marginLeft: 'auto',
-				marginRight: 'auto',
 				maxWidth: '200px',
 				backgroundColor: 'font-dark'
 		}} >

@@ -24,14 +24,14 @@ export const Input: React.FC<InputProps> = ({
 }) => {
 
 	const combinedClassName = clsx(
-		'flex h-10 w-full rounded-brand border bg-transparent px-3 py-2 text-sm',
+		'flex h-10 w-full rounded-brand border bg-transparent px-2 py-3 text-sm',
 		'ring-offset-background-dark',
 		'file:border-0 file:bg-transparent file:text-sm file:font-medium',
 		'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2',
 		'disabled:cursor-not-allowed disabled:opacity-50',
 		'font-sans',
-		'border-brand-blue/30',
-		'text-color-active',
+		'border-brand-green/50',
+		'text-brand-green',
 		'placeholder:text-color-passive',
 
 		className

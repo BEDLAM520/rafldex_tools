@@ -6,18 +6,18 @@ export default function Document() {
 		<Head>
 		<link rel="manifest" href="/manifest.json" />
 		<script
-		dangerouslySetInnerHTML={{
-			__html: `
-							<!-- Google tag (gtag.js) -->
-							<script async src="https://www.googletagmanager.com/gtag/js?id=G-LB4B420FK0"></script>
-							<script>
-							window.dataLayer = window.dataLayer || [];
-							function gtag(){dataLayer.push(arguments);}
-							gtag('js', new Date());
+			dangerouslySetInnerHTML={{
+				__html: `
+								<!-- Google tag (gtag.js) -->
+								<script async src="https://www.googletagmanager.com/gtag/js?id=G-LB4B420FK0"></script>
+								<script>
+								window.dataLayer = window.dataLayer || [];
+								function gtag(){dataLayer.push(arguments);}
+								gtag('js', new Date());
 
-							gtag('config', 'G-LB4B420FK0');
-							</script>`,
-		}}
+								gtag('config', 'G-LB4B420FK0');
+								</script>`,
+			}}
 		/>
 		<meta charSet="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
