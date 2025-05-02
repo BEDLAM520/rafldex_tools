@@ -50,7 +50,7 @@ const SolanaPaymentButton: React.FC = () => {
 			<a href={paymentLink} target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:underline text-sm mb-2">Open in Wallet</a>
 			<p className="text-center text-color-active text-sm">Or click the address below to copy:</p>
 			<p
-			className="text-yellow-800 break-words dark:text-yellow-300 cursor-pointer hover:opacity-80 font-mono text-xs pb-2"
+			className="text-yellow-800 break-words dark:text-yellow-300 cursor-pointer hover:opacity-80 font-mono text-xs pb-4 mb-3"
 			title={address}
 			onClick={handleCopyAddress}
 			>

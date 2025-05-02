@@ -31,7 +31,7 @@ const SuiPaymentButton: React.FC = () => {
 		<div className="flex flex-col items-center gap-1 mt-2">
 		<p className="text-center text-color-active text-sm">Or click the address below to copy:</p>
 		<p
-		className="text-yellow-800 break-words dark:text-yellow-300 cursor-pointer hover:opacity-80 font-mono text-xs pb-2"
+		className="text-yellow-800 break-words dark:text-yellow-300 cursor-pointer hover:opacity-80 font-mono text-xs pb-4 mb-3"
 		title={address}
 		onClick={handleCopyAddress}
 		>

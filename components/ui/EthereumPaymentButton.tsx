@@ -48,7 +48,7 @@ const EthereumPaymentButton: React.FC = () => {
 						<a href={paymentLink} className="text-brand-blue hover:underline text-sm mb-2">Open in Wallet</a>
 					<p className="text-center text-color-active text-sm">Or click the address below to copy:</p>
 					<p
-					className="text-yellow-800 break-words dark:text-yellow-300 cursor-pointer hover:opacity-80 font-mono text-xs"
+					className="text-yellow-800 break-words dark:text-yellow-300 cursor-pointer hover:opacity-80 font-mono text-xs pb-4 mb-3"
 					title={address}
 					onClick={handleCopyAddress}
 					>
@@ -63,8 +63,4 @@ const EthereumPaymentButton: React.FC = () => {
 	);
 };
 
-<<<<<<< HEAD
 export default EthereumPaymentButton;
-=======
-		export default EthereumPaymentButton;
->>>>>>> 80b0cc131c29d3400086b32118b6e37463641936

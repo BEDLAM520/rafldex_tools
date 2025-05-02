@@ -9,7 +9,18 @@ import { Card } from '@/components/ui/card';
 
 const BuyMeACoffee: React.FC = () => {
 	return (
-		<div className="container mx-auto px-4 py-8 text-center font-sans min-h-screen flex flex-col items-center">
+<div className="container mx-auto px-4 py-8 text-center font-sans min-h-screen flex flex-col items-center relative">
+			<Link href="/" passHref>
+				<a
+					className="absolute top-4 left-4 md:top-6 md:left-6 text-brand-green/90 hover:text-brand-green transition-colors"
+					title="Return Home"
+					aria-label="Return Home"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+						<path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+					</svg>
+				</a>
+			</Link>
 			<div className="flex flex-col items-center gap-4 w-full max-w-4xl">
 
 				<img

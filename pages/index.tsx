@@ -247,7 +247,7 @@ const IndexPage: React.FC = () => {
 		<span className="text-brand-blue/80 text-1xl font-bold">*UNOFFICIAL*</span>
 		</div>
 
-		<Card className="bg-font-dark w-full max-w-xl mb-4">
+		<Card className="bg-font-dark w-full max-w-2xl mb-4 p-6 mx-auto">
 		<h1 className="text-center text-3xl font-bold mb-4 text-color-active">Rafldex Participants Snapshot</h1>
 		<p className="mb-4 text-center text-brand-blue/80">Enter Raffle ID(s)/Address(es) below.</p>
 
@@ -263,14 +263,14 @@ const IndexPage: React.FC = () => {
 			/>
 			{index === raffleIds.length - 1 ? (
 				<Button onClick={addInput} variant="secondary" size="icon" aria-label="Add Raffle ID Input">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-				<path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+					<path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 				</svg>
 				</Button>
 			) : (
 				<Button onClick={() => removeInput(index)} variant="destructive" size="icon" aria-label="Remove Raffle ID Input">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-				<path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+					<path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
 				</svg>
 				</Button>
 			)}
